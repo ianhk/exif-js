@@ -34,7 +34,23 @@ var BinaryFile = function(strData, iDataOffset, iDataLength) {
 		this.getBytesAt = function(iOffset, iLength) {
 			return new VBArray(IEBinary_getBytesAt(data, iOffset + dataOffset, iLength)).toArray();
 		}
-	}
+	} else if (strData instanceof Uint8Array) {
+        dataLength = iDataLength || strData.length;
+
+        this.getByteAt = function(iOffset) {
+            return data[iOffset + dataOffset];
+        }
+
+        this.getBytesAt = function(iOffset, iLength) {
+            var aBytes = [];
+
+            for (var i = 0; i < iLength; i++) {
+                aBytes[i] = data[iOffset + i + dataOffset];
+            };
+
+            return aBytes;
+        }
+    }
 
 	this.getLength = function() {
 		return dataLength;
